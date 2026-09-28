@@ -1,129 +1,54 @@
-Update my existing `README.md` into a **short, modern, technically structured GitHub README** for the new project.
+# AI-Powered Illegal Parking Detection System — Dashboard Prototype
 
-# Project
+A Streamlit-only admin dashboard prototype for an academic (SIH-style) project.
 
-**AI-Based Traffic Violation Detection System**
+## Run it
 
-The project detects:
-
-* 🚫 No-Entry Violation
-* 🔄 Wrong-Way Driving
-
-### Required Structure
-
-## 🚦 Overview
-
-One short paragraph explaining that the system uses **YOLO-based vehicle detection, object tracking, and movement analysis** to identify no-entry and wrong-way violations from video/camera feeds.
-
-## ⚙️ Detection Pipeline
-
-```text
-Camera / Video
-      ↓
-YOLO Detection
-      ↓
-Object Tracking
-      ↓
-Position History
-      ↓
-Direction Analysis
-      ↓
-Violation Detection
-      ↓
-Evidence + Dashboard
+```bash
+pip install -r requirements.txt
+streamlit run app.py
 ```
 
-## 🔍 Core Modules
+Login with a demo account:
+- `admin` / `admin123`
+- `officer` / `officer123`
 
-| Module              | Function                                         |
-| ------------------- | ------------------------------------------------ |
-| Vehicle Detection   | Detect vehicles using YOLO                       |
-| Tracking            | Assign and maintain vehicle IDs                  |
-| Direction Analysis  | Calculate movement from frame-to-frame positions |
-| No-Entry Detection  | Detect vehicles entering restricted ROI          |
-| Wrong-Way Detection | Compare movement with allowed direction          |
-| Evidence            | Capture violation frame + timestamp              |
-| Dashboard           | Display live detection and violation statistics  |
+## Project structure
 
-## 🛠 Tech Stack
-
-`Python` · `YOLO` · `OpenCV` · `Object Tracking` · `Streamlit` · `NumPy`
-
-Only include technologies actually used in the repository.
-
-## 🧠 Wrong-Way Logic
-
-```text
-Vehicle Detection
-      ↓
-Vehicle ID
-      ↓
-Track Center Coordinates
-      ↓
-Calculate Movement Vector
-      ↓
-Compare With Allowed Direction
-      ↓
-Opposite Direction → Violation
+```
+app.py                  # entry point: login gate + page routing
+config.py               # app constants, demo credentials, DB/AI config placeholders
+styles.py                # all custom CSS (dark CCTV theme), loaded once
+components.py            # reusable UI helpers: cards, badges, page headers
+database.py              # data access layer -> swap for real MySQL queries later
+ai_engine.py              # AI access layer -> swap for real YOLO/OpenCV/OCR later
+sample_data.py            # realistic demo data generator (used by database.py)
+modules/
+    login.py              # login screen
+    sidebar.py             # persistent sidebar navigation + system status
+    dashboard.py           # Dashboard page
+    live_monitoring.py     # Live Monitoring page
+    violations.py           # Violations page
+    cameras.py               # Cameras page
+    reports.py                # Reports & Analytics page
+    settings.py                # Settings page
 ```
 
-Mention that **YOLO detects vehicles; tracking and direction analysis determine wrong-way movement.**
+## Connecting real systems later
 
-## 🚫 No-Entry Logic
+- **MySQL**: only `database.py` needs to change. Every function there
+  currently calls `sample_data.py`; replace each function body with a
+  real `mysql-connector-python` / SQLAlchemy query that returns the same
+  list-of-dict shape. No UI code needs to change.
+- **YOLO / OpenCV / OCR**: only `ai_engine.py` needs to change.
+  `detect_vehicles()`, `read_number_plate()`, and `check_zone_violation()`
+  are already isolated from the UI in `modules/live_monitoring.py`.
+- **Camera streams**: `modules/live_monitoring.py` has a clearly marked
+  webcam/RTSP integration point using `cv2.VideoCapture(...)`.
 
-```text
-Vehicle Detection
-      ↓
-Tracking
-      ↓
-Restricted ROI
-      ↓
-Vehicle Enters ROI
-      ↓
-No-Entry Violation
-```
+## Notes
 
-## 💻 Hardware
-
-**Required:** Laptop/PC + Camera/Webcam/CCTV
-**Optional:** GPU for faster inference
-
-## 📁 Project Structure
-
-Show the **actual repository structure** after inspecting the project. Do not invent filenames.
-
-## 🚀 Setup
-
-Provide only the necessary installation and run commands based on the actual project.
-
-## 📊 Output
-
-* Vehicle ID
-* Violation Type
-* Timestamp
-* Bounding Box
-* Captured Evidence
-* Violation Statistics
-
-## 🔮 Future Scope
-
-License Plate Recognition · Multi-Camera Support · Speed Estimation · Cloud Logging · Automated Alerts
-
-## ⚠️ Limitations
-
-Mention only important limitations such as camera angle, lighting, occlusion, tracking accuracy, and correct configuration of traffic direction/ROI.
-
-## 👨‍💻 Author
-
-Use the existing repository/profile information.
-
-### Style Requirements
-
-* Keep the README **short and advanced-looking**.
-* Use clean headings, tables, badges only where useful, and diagrams.
-* Avoid long explanations.
-* Avoid marketing language.
-* Do not claim 100% accuracy.
-* Do not mention illegal parking as the current project.
-* Do not claim features that are not implemented.
-* Make it suitable for a **college project + professional GitHub portfolio**.
+- Color meaning is consistent everywhere: green = safe/active,
+  red = violation/offline, yellow = warning/pending, blue = info.
+- All data shown is realistic sample data generated in `sample_data.py`
+  (seeded, so it stays consistent between reruns).

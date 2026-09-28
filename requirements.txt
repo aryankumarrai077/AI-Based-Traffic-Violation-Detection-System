@@ -1,0 +1,9 @@
+streamlit>=1.32
+pandas>=2.0
+plotly>=5.20
+opencv-python-headless>=4.9
+ultralytics>=8.2
+
+# Future integration (not required yet):
+# mysql-connector-python   # for real database.py
+# easyocr                  # for real number-plate OCR in ai_engine.py
