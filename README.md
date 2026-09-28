@@ -6,7 +6,7 @@ Update my existing `README.md` into a **short, modern, technically structured Gi
 
 The project detects:
 
-* 🚫 No-Entry Violations
+* 🚫 No-Entry Violation
 * 🔄 Wrong-Way Driving
 
 ### Required Structure
